@@ -62,6 +62,7 @@ interface ActionState<T = unknown> {
   ok: boolean;
   message?: string;
   fieldErrors?: Record<string, string[]>;
+  redirectTo?: string;
   data?: T;
 }
 
@@ -134,7 +135,11 @@ export async function loginAction(
   });
 
   await logAuditEvent("login.success", { ...ctx, userId: user.id });
-  redirect("/tableau-de-bord");
+  // On NE fait PAS `redirect()` ici : dans Next 15 + React 19, la combinaison
+  // redirect() + useActionState peut faire remonter un rejet non-Error (un
+  // Event) dans le handler global de la devtool. Le client redirige via
+  // router.push(state.redirectTo) — même effet, plus stable.
+  return { ok: true, redirectTo: "/tableau-de-bord" };
 }
 
 export async function logoutAction(): Promise<void> {

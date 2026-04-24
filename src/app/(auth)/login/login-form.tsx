@@ -1,7 +1,8 @@
 "use client";
 
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
 
 import { loginAction } from "@/features/auth/actions";
 
@@ -12,8 +13,16 @@ import { Label } from "@/components/ui/label";
 const initialState = { ok: false } as const;
 
 export function LoginForm() {
+  const router = useRouter();
   const [state, formAction, pending] = useActionState(loginAction, initialState);
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (state.ok && state.redirectTo) {
+      router.replace(state.redirectTo);
+      router.refresh();
+    }
+  }, [state, router]);
 
   return (
     <form action={formAction} className="space-y-4" noValidate>
@@ -47,7 +56,9 @@ export function LoginForm() {
             type="button"
             onClick={() => setVisible((v) => !v)}
             className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-text-muted hover:text-text-primary"
-            aria-label={visible ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+            aria-label={
+              visible ? "Masquer le mot de passe" : "Afficher le mot de passe"
+            }
           >
             {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
