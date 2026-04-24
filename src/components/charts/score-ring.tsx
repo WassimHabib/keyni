@@ -129,14 +129,14 @@ export function ScoreRing({
             {value}
             <span className="text-[60%] font-semibold">/100</span>
           </span>
-          <span
-            className="font-semibold uppercase tracking-wider"
-            style={{ fontSize: dims.subFont }}
-          >
-            {label}
-          </span>
         </div>
       </div>
+      <span
+        className="font-semibold uppercase tracking-wider"
+        style={{ fontSize: dims.subFont, color: palette.textColor }}
+      >
+        {label}
+      </span>
       {showLevelLabel ? (
         <span
           className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold shadow-card"
