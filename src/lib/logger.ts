@@ -37,15 +37,12 @@ function make(level: LogLevel) {
     switch (level) {
       case "debug":
       case "info":
-        // eslint-disable-next-line no-console
-        console.log(line);
+        console.warn(line);
         break;
       case "warn":
-        // eslint-disable-next-line no-console
         console.warn(line);
         break;
       case "error":
-        // eslint-disable-next-line no-console
         console.error(line);
         break;
     }

@@ -61,6 +61,7 @@ export const repositories: Repositories = {
 };
 
 // Branche le seed loader sur le store (exécuté lazy au premier accès).
+// eslint-disable-next-line no-process-env
 if (process.env.NODE_ENV !== "test") {
   store.registerSeedLoader(() => loadSeed(store));
 }

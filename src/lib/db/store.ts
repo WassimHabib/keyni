@@ -78,6 +78,7 @@ const globalForStore = globalThis as unknown as {
 export const store: InMemoryStore =
   globalForStore.__keyniStore ?? new InMemoryStore();
 
+// eslint-disable-next-line no-process-env
 if (process.env.NODE_ENV !== "production") {
   globalForStore.__keyniStore = store;
 }

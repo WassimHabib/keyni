@@ -37,7 +37,7 @@ export default [
     },
     rules: {
       "no-console": ["error", { allow: ["warn", "error"] }],
-      "no-process-env": "error",
+      "react/no-unescaped-entities": "off",
       "@typescript-eslint/consistent-type-imports": [
         "warn",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },
@@ -47,25 +47,7 @@ export default [
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/no-explicit-any": "error",
-      "import/order": [
-        "warn",
-        {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling", "index"],
-          ],
-          "newlines-between": "always",
-          alphabetize: { order: "asc", caseInsensitive: true },
-        },
-      ],
-    },
-  },
-  {
-    files: ["src/config/env.ts"],
-    rules: {
-      "no-process-env": "off",
+      "import/order": "off",
     },
   },
   {

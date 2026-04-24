@@ -108,8 +108,7 @@ export function PasswordResetEmail({
               lineHeight: "20px",
             }}
           >
-            Si vous n'êtes pas à l'origine de cette demande, ignorez simplement
-            cet email. Votre mot de passe actuel reste valable.
+            {"Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email. Votre mot de passe actuel reste valable."}
           </Text>
         </Container>
 
