@@ -4,7 +4,6 @@ import { AlertTriangle } from "lucide-react";
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
-import { logger } from "@/lib/logger";
 
 interface ErrorProps {
   error: Error & { digest?: string };
@@ -13,10 +12,7 @@ interface ErrorProps {
 
 export default function AppError({ error, reset }: ErrorProps) {
   useEffect(() => {
-    logger.error("rendering error", {
-      message: error.message,
-      digest: error.digest,
-    });
+    console.error("rendering error", error.message, error.digest);
   }, [error]);
 
   return (

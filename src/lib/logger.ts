@@ -1,3 +1,5 @@
+import "server-only";
+
 import { env } from "@/config/env";
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
