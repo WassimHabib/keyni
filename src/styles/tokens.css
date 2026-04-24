@@ -1,0 +1,51 @@
+/**
+ * Tokens de design Keyni
+ * Source unique pour les couleurs, rayons et ombres.
+ * Exportées aussi dans tailwind.config.ts.
+ */
+
+:root {
+  /* Brand */
+  --color-primary: #14b8a6;
+  --color-primary-strong: #0ea598;
+  --color-primary-soft: #e6f7f4;
+  --color-primary-foreground: #ffffff;
+
+  /* Neutres */
+  --color-background: #f7f5ef;
+  --color-surface: #ffffff;
+  --color-border: #e8e6df;
+  --color-muted: #f2f0ea;
+
+  /* Texte */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  /* Sémantique */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #0ea5e9;
+
+  /* Charts */
+  --color-chart-1: #0ea5e9;
+  --color-chart-2: #14b8a6;
+  --color-chart-3: #f59e0b;
+  --color-chart-4: #10b981;
+  --color-chart-5: #f472b6;
+
+  /* Rayons */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Ombres */
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  /* Dark mode désactivé pour l'instant — les tokens restent les mêmes. */
+}

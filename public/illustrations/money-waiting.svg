@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120" role="img" aria-label="Gains en attente">
+  <defs>
+    <linearGradient id="bill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#10b981"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <circle cx="80" cy="70" r="52" fill="#d1fae5"/>
+  <g transform="translate(24 46) rotate(-6)">
+    <rect width="84" height="44" rx="6" fill="url(#bill)"/>
+    <rect x="6" y="6" width="72" height="32" rx="4" fill="none" stroke="#065f46" stroke-opacity="0.35"/>
+    <circle cx="42" cy="22" r="9" fill="#065f46" fill-opacity="0.25"/>
+    <text x="42" y="26" text-anchor="middle" fill="#d1fae5" font-size="10" font-family="Plus Jakarta Sans, sans-serif" font-weight="800">€</text>
+  </g>
+  <g transform="translate(44 38) rotate(4)">
+    <rect width="84" height="44" rx="6" fill="#34d399"/>
+    <rect x="6" y="6" width="72" height="32" rx="4" fill="none" stroke="#065f46" stroke-opacity="0.35"/>
+    <circle cx="42" cy="22" r="9" fill="#065f46" fill-opacity="0.25"/>
+    <text x="42" y="26" text-anchor="middle" fill="#ecfdf5" font-size="10" font-family="Plus Jakarta Sans, sans-serif" font-weight="800">€</text>
+  </g>
+  <circle cx="130" cy="44" r="4" fill="#10b981"/>
+  <circle cx="36" cy="30" r="3" fill="#10b981"/>
+  <circle cx="118" cy="98" r="3" fill="#34d399"/>
+</svg>

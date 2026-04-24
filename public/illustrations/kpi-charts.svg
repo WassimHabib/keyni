@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 110" width="220" height="110" role="img" aria-label="Vos KPI à jour">
+  <g transform="translate(10 10)">
+    <rect width="94" height="90" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <g transform="translate(12 12)">
+      <rect x="0" y="48" width="10" height="18" rx="2" fill="#60a5fa"/>
+      <rect x="14" y="38" width="10" height="28" rx="2" fill="#60a5fa"/>
+      <rect x="28" y="26" width="10" height="40" rx="2" fill="#60a5fa"/>
+      <rect x="42" y="14" width="10" height="52" rx="2" fill="#60a5fa"/>
+      <rect x="56" y="6" width="10" height="60" rx="2" fill="#3b82f6"/>
+    </g>
+  </g>
+  <g transform="translate(116 10)">
+    <rect width="94" height="90" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <g transform="translate(10 16)">
+      <polyline points="0,52 16,44 30,48 46,32 60,24 74,12" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="0,62 16,58 30,54 46,44 60,36 74,24" fill="none" stroke="#14b8a6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

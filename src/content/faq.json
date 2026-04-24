@@ -1,0 +1,42 @@
+[
+  {
+    "q": "Comment déclarer un sinistre ?",
+    "a": "Depuis votre tableau de bord, cliquez sur « Déclarer un sinistre » puis suivez les 3 étapes : bien concerné, type et description, récapitulatif. Un conseiller vous recontacte sous 24 h ouvrées."
+  },
+  {
+    "q": "Quel est le délai de traitement d'un sinistre ?",
+    "a": "Nous accusons réception sous 24 h ouvrées et mandatons un expert sous 5 jours pour les sinistres standards (dégâts des eaux, bris, vol). Les dossiers complexes sont traités en 15 jours maximum."
+  },
+  {
+    "q": "Comment modifier les informations d'un bien ?",
+    "a": "Rendez-vous dans Outils → Informations personnelles, sélectionnez le bien concerné, modifiez les champs et cliquez sur Enregistrer."
+  },
+  {
+    "q": "Comment changer mon IBAN pour les remboursements ?",
+    "a": "Contactez votre conseiller via le chat ou par email : une fois la vérification d'identité effectuée, l'IBAN est mis à jour sous 48 h."
+  },
+  {
+    "q": "Puis-je souscrire une PNO pour un bien loué saisonnier ?",
+    "a": "Oui. Lors de la souscription, indiquez l'usage « Location meublée » : nous adaptons les garanties pour couvrir la location touristique."
+  },
+  {
+    "q": "Comment augmenter mon score Keyni ?",
+    "a": "Souscrivez vos assurances manquantes depuis Outils → Améliorer mon score, et uploadez vos documents juridiques (bail, état des lieux) pour analyse automatique."
+  },
+  {
+    "q": "Le parrainage, comment ça marche ?",
+    "a": "Rendez-vous dans Bons plans, copiez votre lien personnel et partagez-le. À chaque souscription validée, vous et votre filleul recevez 20 €."
+  },
+  {
+    "q": "Mes documents sont-ils sécurisés ?",
+    "a": "Tous les fichiers sont chiffrés au repos et pendant le transit, stockés en Union européenne, et jamais partagés sans votre consentement explicite."
+  },
+  {
+    "q": "Comment résilier un contrat ?",
+    "a": "Depuis Mes contrats, ouvrez le contrat concerné et cliquez sur « Demander la résiliation ». Un conseiller vous accompagne dans la démarche."
+  },
+  {
+    "q": "Puis-je assurer plusieurs biens avec un seul compte ?",
+    "a": "Oui, votre espace Keyni gère tous vos biens (résidence, location nue, meublée, commerce, bureau) depuis un même compte."
+  }
+]
