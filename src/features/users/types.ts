@@ -43,10 +43,14 @@ export const UserProfileSchema = z.object({
 });
 export type UserProfile = z.infer<typeof UserProfileSchema>;
 
+export const UserRoleSchema = z.enum(["user", "admin"]);
+export type UserRole = z.infer<typeof UserRoleSchema>;
+
 export const UserSchema = z.object({
   id: UlidSchema,
   email: EmailSchema,
   passwordHash: z.string().min(20),
+  role: UserRoleSchema.default("user"),
   profile: UserProfileSchema,
   createdAt: IsoDateSchema,
   updatedAt: IsoDateSchema,
@@ -57,6 +61,7 @@ export type UserId = User["id"];
 export const CreateUserInputSchema = z.object({
   email: EmailSchema,
   passwordHash: z.string().min(20),
+  role: UserRoleSchema.default("user"),
   profile: UserProfileSchema,
 });
 export type CreateUserInput = z.infer<typeof CreateUserInputSchema>;

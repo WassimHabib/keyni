@@ -38,12 +38,20 @@ export class InMemoryUserRepository implements UserRepository {
       id: ulid(),
       email: input.email.trim().toLowerCase(),
       passwordHash: input.passwordHash,
+      role: input.role ?? "user",
       profile: input.profile,
       createdAt: now,
       updatedAt: now,
     };
     this.store.users.set(user.id, user);
     return user;
+  }
+
+  async findAll(): Promise<User[]> {
+    await this.store.ensureSeeded();
+    return Array.from(this.store.users.values()).sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+    );
   }
 
   async updateProfile(

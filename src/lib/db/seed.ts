@@ -12,6 +12,8 @@ import type { InMemoryStore, ScoreSnapshot } from "./store";
 
 export const DEMO_USER_EMAIL = "mhm@example.test";
 export const DEMO_USER_PASSWORD = "MhmKeyni2026!";
+export const DEMO_ADMIN_EMAIL = "admin@example.test";
+export const DEMO_ADMIN_PASSWORD = "AdminKeyni2026!";
 
 type SeedProperty = Omit<Property, "id" | "userId" | "createdAt" | "updatedAt">;
 type SeedContract = Omit<Contract, "id" | "userId" | "propertyId" | "createdAt" | "updatedAt">;
@@ -34,6 +36,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
     id: userId,
     email: DEMO_USER_EMAIL,
     passwordHash: hash,
+    role: "user",
     profile: {
       displayName: "MHM",
       firstName: "Marc-Henri",
@@ -48,6 +51,72 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
     updatedAt: now,
   };
   store.users.set(user.id, user);
+
+  // Compte administrateur — accès au back-office Keyni
+  const adminId = ulid();
+  const adminHash = await hashPassword(DEMO_ADMIN_PASSWORD);
+  const admin: User = {
+    id: adminId,
+    email: DEMO_ADMIN_EMAIL,
+    passwordHash: adminHash,
+    role: "admin",
+    profile: {
+      displayName: "Admin Keyni",
+      firstName: "Admin",
+      lastName: "Keyni",
+    },
+    createdAt: yearAgo,
+    updatedAt: now,
+  };
+  store.users.set(admin.id, admin);
+
+  // Second client pour peupler la liste admin
+  const secondId = ulid();
+  const secondHash = await hashPassword("Demo2026Client!");
+  const second: User = {
+    id: secondId,
+    email: "sophie.leclerc@example.test",
+    passwordHash: secondHash,
+    role: "user",
+    profile: {
+      displayName: "Sophie L.",
+      firstName: "Sophie",
+      lastName: "Leclerc",
+      situation: "cadre",
+      revenusMensuelsNetsCents: 620000,
+      chargesMensuellesCents: 195000,
+      personnesFoyer: 3,
+      regimeFiscal: "lmnp_reel",
+    },
+    createdAt: new Date(yearAgo.getTime() + 30 * 24 * 60 * 60 * 1000),
+    updatedAt: now,
+  };
+  store.users.set(second.id, second);
+
+  // Un bien pour la cliente secondaire
+  const sophiaProp: Property = {
+    id: ulid(),
+    userId: second.id,
+    name: "Studio Paris 11e",
+    city: "Paris",
+    type: "appartement",
+    usage: "location_meublee",
+    surface: 32,
+    dateAcquisition: new Date("2023-06-10"),
+    prixAcquisitionCents: 28_500_000,
+    valeurActuelleEstimeeCents: 30_200_000,
+    finances: {
+      loyerMensuelCents: 118_000,
+      chargesMensuellesCents: 14_000,
+      mensualiteCreditCents: 92_000,
+      tauxInteret: 3.1,
+      dureeRestantePretAnnees: 22,
+      apportPersonnelCents: 5_500_000,
+    },
+    createdAt: new Date("2023-06-10"),
+    updatedAt: now,
+  };
+  store.properties.set(sophiaProp.id, sophiaProp);
 
   const propertiesSeed: SeedProperty[] = [
     {

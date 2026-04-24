@@ -36,11 +36,19 @@ export async function requireUser(): Promise<User> {
   return user;
 }
 
+export async function requireAdmin(): Promise<User> {
+  const user = await requireUser();
+  if (user.role !== "admin") {
+    redirect("/tableau-de-bord");
+  }
+  return user;
+}
+
 export async function redirectIfAuthenticated(
   destination = "/tableau-de-bord",
 ): Promise<void> {
   const user = await getOptionalUser();
   if (user) {
-    redirect(destination);
+    redirect(user.role === "admin" ? "/admin" : destination);
   }
 }
