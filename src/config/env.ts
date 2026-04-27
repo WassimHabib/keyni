@@ -65,9 +65,17 @@ function parseEnv(): z.infer<typeof envSchema> {
       .map((issue) => `  · ${issue.path.join(".")} — ${issue.message}`)
       .join("\n");
 
+    const onVercel = Boolean(raw.VERCEL);
+    const onCi = Boolean(raw.CI);
+    const where = onVercel
+      ? "Settings → Environment Variables de votre projet Vercel"
+      : onCi
+        ? "secrets/variables d'environnement de votre pipeline CI"
+        : "fichier .env.local (cf. .env.example)";
+
     // eslint-disable-next-line no-console
     console.error(
-      `\n❌ Variables d'environnement invalides :\n${formatted}\n\nVérifiez votre .env.local ou .env.example.\n`,
+      `\n❌ Variables d'environnement invalides :\n${formatted}\n\nÀ corriger dans : ${where}\nGénérer un SESSION_SECRET : openssl rand -base64 48\n`,
     );
     throw new Error("Variables d'environnement invalides");
   }
