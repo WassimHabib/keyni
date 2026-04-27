@@ -1,7 +1,7 @@
 "use client";
 
 import { Eye, EyeOff, LogIn } from "lucide-react";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 
 import { loginAction } from "@/features/auth/actions";
 
@@ -14,17 +14,6 @@ const initialState = { ok: false } as const;
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (state.ok && state.redirectTo) {
-      // Navigation « hard » : garantit que le cookie de session posé par
-      // l'action est envoyé dans la requête suivante. Avec router.replace
-      // (soft routing) on observe sur Vercel des cas où le GET suivant part
-      // avant que le navigateur ait stocké le Set-Cookie, ce qui renvoie
-      // sur /login.
-      window.location.assign(state.redirectTo);
-    }
-  }, [state]);
 
   return (
     <form action={formAction} className="space-y-4" noValidate>

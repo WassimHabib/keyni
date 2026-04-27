@@ -135,11 +135,12 @@ export async function loginAction(
   });
 
   await logAuditEvent("login.success", { ...ctx, userId: user.id });
-  // On NE fait PAS `redirect()` ici : dans Next 15 + React 19, la combinaison
-  // redirect() + useActionState peut faire remonter un rejet non-Error (un
-  // Event) dans le handler global de la devtool. Le client redirige via
-  // router.push(state.redirectTo) — même effet, plus stable.
-  return { ok: true, redirectTo: "/tableau-de-bord" };
+  const target = user.role === "admin" ? "/admin" : "/tableau-de-bord";
+  // redirect() depuis une Server Action est l'API canonique : Next.js
+  // empaquette la réponse avec le Set-Cookie + l'instruction de navigation,
+  // garantissant que le navigateur ait bien le cookie quand il fait le GET
+  // de la page cible.
+  redirect(target);
 }
 
 export async function logoutAction(): Promise<void> {
