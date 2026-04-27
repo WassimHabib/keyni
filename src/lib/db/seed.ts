@@ -1,4 +1,4 @@
-import { ulid } from "ulid";
+import { createHmac } from "node:crypto";
 
 import { hashPassword } from "@/features/auth/password";
 import type { Contract } from "@/features/contracts/types";
@@ -20,6 +20,23 @@ type SeedContract = Omit<Contract, "id" | "userId" | "propertyId" | "createdAt" 
 type SeedDocument = Omit<Document, "id" | "userId" | "propertyId" | "uploadedAt">;
 
 /**
+ * Génère un ID déterministe (26 caractères, alphabet Crockford Base32
+ * compatible ULID) à partir d'un slug. Critique pour les runtimes serverless :
+ * chaque cold start exécute le seed dans une nouvelle instance — sans IDs
+ * stables, le cookie posé par l'instance A pointe vers un userId que
+ * l'instance B ne connaît pas (re-seed avec ulid() aléatoire).
+ */
+const SEED_ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+function seedId(slug: string): string {
+  const bytes = createHmac("sha256", "keyni-seed-v1").update(slug).digest();
+  let out = "";
+  for (let i = 0; i < 26; i += 1) {
+    out += SEED_ALPHABET[bytes[i]! % 32];
+  }
+  return out;
+}
+
+/**
  * Seed par défaut — conforme aux maquettes.
  * Chargé lazy à la première requête sur le store.
  */
@@ -29,7 +46,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   const now = new Date();
   const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
 
-  const userId = ulid();
+  const userId = seedId("user:mhm");
   const hash = await hashPassword(DEMO_USER_PASSWORD);
 
   const user: User = {
@@ -53,7 +70,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   store.users.set(user.id, user);
 
   // Compte administrateur — accès au back-office Keyni
-  const adminId = ulid();
+  const adminId = seedId("user:admin");
   const adminHash = await hashPassword(DEMO_ADMIN_PASSWORD);
   const admin: User = {
     id: adminId,
@@ -71,7 +88,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   store.users.set(admin.id, admin);
 
   // Second client pour peupler la liste admin
-  const secondId = ulid();
+  const secondId = seedId("user:sophie");
   const secondHash = await hashPassword("Demo2026Client!");
   const second: User = {
     id: secondId,
@@ -95,7 +112,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
 
   // Un bien pour la cliente secondaire
   const sophiaProp: Property = {
-    id: ulid(),
+    id: seedId("property:sophie:studio-paris"),
     userId: second.id,
     name: "Studio Paris 11e",
     city: "Paris",
@@ -193,8 +210,8 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
     },
   ];
 
-  const properties: Property[] = propertiesSeed.map((seed) => {
-    const id = ulid();
+  const properties: Property[] = propertiesSeed.map((seed, index) => {
+    const id = seedId(`property:mhm:${index}:${seed.name}`);
     const p: Property = {
       ...seed,
       id,
@@ -256,8 +273,8 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
     },
   ];
 
-  const contracts: Contract[] = contractsSeed.map((seed) => {
-    const id = ulid();
+  const contracts: Contract[] = contractsSeed.map((seed, index) => {
+    const id = seedId(`contract:mhm:${index}:${seed.numeroPolice}`);
     const c: Contract = {
       ...seed,
       id,
@@ -277,7 +294,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "attestation-pno-lyon-2024.pdf",
       mime: "application/pdf",
       sizeBytes: 182_340,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "conform",
     },
     {
@@ -286,7 +303,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "bail-meuble-lyon-2024.pdf",
       mime: "application/pdf",
       sizeBytes: 412_120,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "conform",
     },
     {
@@ -295,7 +312,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "etat-des-lieux-entree-lyon.pdf",
       mime: "application/pdf",
       sizeBytes: 344_500,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "needs_review",
     },
     {
@@ -305,7 +322,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "attestation-mrh-bordeaux-2024.pdf",
       mime: "application/pdf",
       sizeBytes: 196_410,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "conform",
     },
     {
@@ -314,7 +331,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "facture-syndic-paris-t3-2025.pdf",
       mime: "application/pdf",
       sizeBytes: 128_000,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "conform",
     },
     {
@@ -323,7 +340,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "echeancier-credit-paris.pdf",
       mime: "application/pdf",
       sizeBytes: 224_300,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "conform",
     },
     {
@@ -332,14 +349,17 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       filename: "facture-travaux-nantes.pdf",
       mime: "application/pdf",
       sizeBytes: 310_220,
-      storageKey: `seed/${ulid()}.pdf`,
+      storageKey: "seed/document.pdf",
       conformity: "pending",
     },
   ];
 
-  for (const seed of documentsSeed) {
+  documentsSeed.forEach((seed, index) => {
+    const docId = seedId(`document:mhm:${index}:${seed.filename}`);
+    // Décalage déterministe entre 0 et 90 jours
+    const offsetDays = (index * 13 + 7) % 90;
     const doc: Document = {
-      id: ulid(),
+      id: docId,
       userId,
       propertyId: seed.propertyId,
       contractId: seed.contractId,
@@ -350,11 +370,11 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
       storageKey: seed.storageKey,
       conformity: seed.conformity,
       uploadedAt: new Date(
-        now.getTime() - Math.floor(Math.random() * 90) * 24 * 60 * 60 * 1000,
+        now.getTime() - offsetDays * 24 * 60 * 60 * 1000,
       ),
     };
     store.documents.set(doc.id, doc);
-  }
+  });
 
   // 6 snapshots score pour alimenter les mini-charts
   const snapshots: ScoreSnapshot[] = [];
@@ -362,7 +382,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   for (let i = 5; i >= 0; i -= 1) {
     const capturedAt = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const snap: ScoreSnapshot = {
-      id: ulid(),
+      id: seedId(`snapshot:mhm:${i}`),
       userId,
       capturedAt,
       globalScore: baseScore[5 - i] ?? 50,
@@ -376,7 +396,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   }
 
   const sinistre: Sinistre = {
-    id: ulid(),
+    id: seedId("sinistre:mhm:lyon-degat-eaux"),
     userId,
     propertyId: lyon.id,
     contractId: contracts[0]!.id,
@@ -410,7 +430,7 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
   store.sinistres.set(sinistre.id, sinistre);
 
   const reward: Reward = {
-    id: ulid(),
+    id: seedId("reward:mhm:parrainage-jd"),
     userId,
     amountCents: 2000,
     source: "parrainage",
@@ -448,10 +468,14 @@ export async function loadSeed(store: InMemoryStore): Promise<void> {
     },
   ];
 
-  for (const seed of referralsSeed) {
-    const ref: Referral = { ...seed, id: ulid(), userId };
+  referralsSeed.forEach((seed, index) => {
+    const ref: Referral = {
+      ...seed,
+      id: seedId(`referral:mhm:${index}:${seed.maskedName}`),
+      userId,
+    };
     store.referrals.set(ref.id, ref);
-  }
+  });
 }
 
 export async function resetAndSeed(store: InMemoryStore): Promise<void> {
